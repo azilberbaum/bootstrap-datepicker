@@ -51,6 +51,7 @@
 		if (this.isInput) {
 			this.element.on({
 				focus: $.proxy(this.show, this),
+				click: $.proxy(this.show, this),
 				keyup: $.proxy(this.update, this),
 				keydown: $.proxy(this.keydown, this)
 			});
@@ -59,6 +60,7 @@
 				// For components that are not readonly, allow keyboard nav
 				this.element.find('input').on({
 					focus: $.proxy(this.show, this),
+					click: $.proxy(this.show, this),
 					keyup: $.proxy(this.update, this),
 					keydown: $.proxy(this.keydown, this)
 				});
@@ -125,6 +127,7 @@
 		constructor: Datepicker,
 
 		show: function(e) {
+			if (this.picker.noshow) return;
 			this.picker.show();
 			this.height = this.component ? this.component.outerHeight() : this.element.outerHeight();
 			this.update();
@@ -463,7 +466,11 @@
 			if (element) {
 				element.change();
 				if (this.autoclose) {
-									this.hide();
+					// Return focus to the input field
+					this.picker.noshow = true;
+					element.focus();
+					delete this.picker.noshow;
+					this.hide();
 				}
 			}
 		},
