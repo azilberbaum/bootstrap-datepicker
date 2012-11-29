@@ -20,6 +20,8 @@
 
 // test123
 // newcolors1
+// red
+// blue
 !function( $ ) {
 
 	function UTCDate(){
